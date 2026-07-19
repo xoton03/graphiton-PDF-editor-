@@ -64,13 +64,16 @@ public class LibreOfficeService : ILibreOfficeService
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            // Clean extension (remove leading dot if present)
             string ext = targetExtension.TrimStart('.').ToLower();
+            string inputExt = Path.GetExtension(inputPath).TrimStart('.').ToLower();
+
+            // Include PDF import filter for PDF to Office conversions
+            string inFilterArg = inputExt == "pdf" ? "--infilter=\"writer_pdf_import\" " : "";
 
             var startInfo = new ProcessStartInfo
             {
                 FileName = sofficePath,
-                Arguments = $"--headless --convert-to {ext} \"{inputPath}\" --outdir \"{outputDirectory}\"",
+                Arguments = $"--headless {inFilterArg}--convert-to {ext} \"{inputPath}\" --outdir \"{outputDirectory}\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
