@@ -68,7 +68,6 @@ public class FileService : IFileService
             }
 
             string json = JsonSerializer.Serialize(list, new JsonSerializerOptions { WriteIndented = true });
-            File.ReadAllText(RecentFilesPath); // test read
             File.WriteAllText(RecentFilesPath, json);
         }
         catch
@@ -120,6 +119,32 @@ public class FileService : IFileService
         {
             Filter = "Fichiers PDF (*.pdf)|*.pdf|Tous les fichiers (*.*)|*.*",
             Title = "Ouvrir un document PDF",
+            Multiselect = false
+        };
+
+        bool? result = dialog.ShowDialog();
+        return result == true ? dialog.FileName : null;
+    }
+
+    public string[]? OpenMultipleFilesDialog()
+    {
+        var dialog = new OpenFileDialog
+        {
+            Filter = "Fichiers PDF (*.pdf)|*.pdf|Tous les fichiers (*.*)|*.*",
+            Title = "Sélectionner plusieurs fichiers PDF",
+            Multiselect = true
+        };
+
+        bool? result = dialog.ShowDialog();
+        return result == true ? dialog.FileNames : null;
+    }
+
+    public string? OpenImageFileDialog()
+    {
+        var dialog = new OpenFileDialog
+        {
+            Filter = "Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|Tous les fichiers (*.*)|*.*",
+            Title = "Sélectionner une image de signature",
             Multiselect = false
         };
 

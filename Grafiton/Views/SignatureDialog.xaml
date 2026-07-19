@@ -1,0 +1,78 @@
+<ui:FluentWindow x:Class="Grafiton.Views.SignatureDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+                  mc:Ignorable="d"
+                  Title="Apposer une signature visuelle" 
+                  Height="450" Width="550"
+                  WindowStartupLocation="CenterOwner"
+                  ExtendsContentIntoTitleBar="True">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Apposer une signature visuelle"/>
+
+        <StackPanel Grid.Row="1" Margin="0,16,0,16">
+            <ui:TextBlock Text="Sélectionner l'image de la signature (PNG)" FontTypography="Subtitle" Margin="0,0,0,8"/>
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ui:TextBox Grid.Column="0" Text="{Binding SignatureImagePath}" IsReadOnly="True"/>
+                <ui:Button Grid.Column="1" Content="Parcourir..." Margin="8,0,0,0" Command="{Binding BrowseSignatureImageCommand}"/>
+            </Grid>
+
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <ui:TextBlock Text="Position X (pts)" Margin="0,0,0,4"/>
+                    <ui:NumberBox Value="{Binding PositionX}" SmallChange="10"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <ui:TextBlock Text="Position Y (pts)" Margin="0,0,0,4"/>
+                    <ui:NumberBox Value="{Binding PositionY}" SmallChange="10"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <ui:TextBlock Text="Largeur (pts)" Margin="0,0,0,4"/>
+                    <ui:NumberBox Value="{Binding SignatureWidth}" SmallChange="10"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <ui:TextBlock Text="Hauteur (pts)" Margin="0,0,0,4"/>
+                    <ui:NumberBox Value="{Binding SignatureHeight}" SmallChange="10"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <ui:TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Content="Annuler" Appearance="Secondary" Margin="0,0,8,0" Command="{Binding CloseCommand}"/>
+                <ui:Button Content="Appliquer la signature" Icon="Checkmark24" Appearance="Primary" Command="{Binding ApplySignatureCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

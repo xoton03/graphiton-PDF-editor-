@@ -10,4 +10,6 @@ public interface IFileService
     void RemoveRecentFile(string filePath);
     void ClearRecentFiles();
     string? OpenFileDialog();
+    string[]? OpenMultipleFilesDialog();
+    string? OpenImageFileDialog();
 }

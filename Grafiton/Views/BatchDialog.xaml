@@ -1,0 +1,121 @@
+<ui:FluentWindow x:Class="Grafiton.Views.BatchDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+                  xmlns:models="clr-namespace:Grafiton.Models"
+                  mc:Ignorable="d"
+                  Title="Traitement par lot" 
+                  Height="600" Width="850"
+                  WindowStartupLocation="CenterOwner"
+                  ExtendsContentIntoTitleBar="True">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <ui:TitleBar Grid.Row="0" Title="Traitement par lot"/>
+
+        <!-- Main Body -->
+        <Grid Grid.Row="1" Margin="0,16,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Column 1: Config -->
+            <Border Grid.Column="0" 
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <StackPanel>
+                    <ui:TextBlock Text="Action à appliquer" FontTypography="Subtitle" Margin="0,0,0,12"/>
+
+                    <ComboBox SelectedIndex="0" Margin="0,0,0,16">
+                        <ComboBoxItem Content="Ajouter un filigrane"/>
+                        <ComboBoxItem Content="Compresser les PDF"/>
+                        <ComboBoxItem Content="Convertir en images PNG"/>
+                        <ComboBoxItem Content="Convertir en Word (.docx)"/>
+                        <ComboBoxItem Content="Protéger par mot de passe"/>
+                    </ComboBox>
+
+                    <ui:TextBlock Text="Texte du filigrane" FontTypography="Body" Margin="0,0,0,6"/>
+                    <ui:TextBox Text="{Binding WatermarkText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
+
+                    <ui:TextBlock Text="Mot de passe (si protection)" FontTypography="Body" Margin="0,0,0,6"/>
+                    <ui:PasswordBox Margin="0,0,0,16"/>
+
+                    <ui:Button Content="Ajouter des fichiers..." 
+                               Icon="Add24" 
+                               Appearance="Primary" 
+                               Command="{Binding AddFilesCommand}"
+                               HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Column 2: File Queue -->
+            <Border Grid.Column="2" 
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <ui:TextBlock Text="File d'attente des fichiers" FontTypography="Subtitle"/>
+                        <ui:Button Content="Vider la liste" Icon="Delete24" Appearance="Secondary" HorizontalAlignment="Right" Command="{Binding ClearJobsCommand}"/>
+                    </Grid>
+
+                    <ListView Grid.Row="1" ItemsSource="{Binding Jobs}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:BatchJob}">
+                                <Grid Margin="0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <ui:TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                                        <ui:TextBlock Text="{Binding SourceFilePath}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+
+                                    <ui:TextBlock Grid.Column="1" Text="{Binding Status}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                    <ui:Button Grid.Column="2" Icon="Dismiss24" Appearance="Transparent" Command="{Binding DataContext.RemoveJobCommand, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}" CommandParameter="{Binding}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Progress Bar -->
+        <ProgressBar Grid.Row="2" Value="{Binding OverallProgress}" Height="6" Margin="0,0,0,12" Maximum="100"/>
+
+        <!-- Footer Actions -->
+        <Grid Grid.Row="3">
+            <ui:TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Content="Fermer" Appearance="Secondary" Margin="0,0,8,0" Command="{Binding CloseCommand}"/>
+                <ui:Button Content="Lancer le lot" Icon="Play24" Appearance="Primary" Command="{Binding StartBatchCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

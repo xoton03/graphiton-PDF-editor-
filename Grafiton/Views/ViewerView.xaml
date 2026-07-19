@@ -59,11 +59,23 @@
                                          HorizontalAlignment="Center" 
                                          VerticalAlignment="Center"/>
 
-                <!-- Right Phase 2 & Phase 3 Actions -->
+                <!-- Right Actions (Batch, Signature, Convert, Merge/Split, Watermark, Password) -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Icon="Layer24" 
+                               Content="Traitement par lot" 
+                               Appearance="Primary" 
+                               Margin="0,0,6,0"
+                               Command="{Binding ShowBatchDialogCommand}"/>
+
+                    <ui:Button Icon="Signature24" 
+                               Content="Signer" 
+                               Appearance="Secondary" 
+                               Margin="0,0,6,0"
+                               Command="{Binding ShowSignatureDialogCommand}"/>
+
                     <ui:Button Icon="ArrowSync24" 
                                Content="Convertir / Compresser" 
-                               Appearance="Primary" 
+                               Appearance="Secondary" 
                                Margin="0,0,6,0"
                                Command="{Binding ShowConversionDialogCommand}"/>
 

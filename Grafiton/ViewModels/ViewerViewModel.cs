@@ -31,6 +31,7 @@ public partial class ViewerViewModel : ObservableObject
 
     public PageManagerViewModel PageManagerVM { get; }
     public AnnotationToolbarViewModel AnnotationToolbarVM { get; }
+    public BookmarkPanelViewModel BookmarkPanelVM { get; }
 
     public ViewerViewModel(
         IFileService fileService,
@@ -45,6 +46,7 @@ public partial class ViewerViewModel : ObservableObject
 
         PageManagerVM = App.ServiceProvider.GetRequiredService<PageManagerViewModel>();
         AnnotationToolbarVM = App.ServiceProvider.GetRequiredService<AnnotationToolbarViewModel>();
+        BookmarkPanelVM = App.ServiceProvider.GetRequiredService<BookmarkPanelViewModel>();
 
         PageManagerVM.DocumentModified += (newPath) =>
         {
@@ -73,6 +75,7 @@ public partial class ViewerViewModel : ObservableObject
         _fileService.AddRecentFile(filePath);
 
         PageManagerVM.LoadDocument(filePath, pageCount);
+        await BookmarkPanelVM.LoadBookmarksAsync(filePath);
     }
 
     [RelayCommand]
@@ -127,6 +130,30 @@ public partial class ViewerViewModel : ObservableObject
             vm.Initialize(Document.FilePath);
         }
         var dialog = new ConversionDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowBatchDialog()
+    {
+        var vm = App.ServiceProvider.GetRequiredService<BatchViewModel>();
+        var dialog = new BatchDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowSignatureDialog()
+    {
+        if (Document == null) return;
+        var vm = App.ServiceProvider.GetRequiredService<SignatureViewModel>();
+        vm.CurrentPdfPath = Document.FilePath;
+        var dialog = new SignatureDialog(vm)
         {
             Owner = Application.Current.MainWindow
         };

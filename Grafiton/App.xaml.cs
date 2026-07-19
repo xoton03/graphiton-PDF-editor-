@@ -31,6 +31,12 @@ public partial class App : Application
         services.AddSingleton<ILibreOfficeService, LibreOfficeService>();
         services.AddSingleton<IConversionService, ConversionService>();
         services.AddSingleton<ICompressionService, CompressionService>();
+        services.AddSingleton<IBatchService, BatchService>();
+        services.AddSingleton<IOcrService, OcrService>();
+        services.AddSingleton<ISignatureService, SignatureService>();
+        services.AddSingleton<ITextToSpeechService, TextToSpeechService>();
+        services.AddSingleton<IBookmarkService, BookmarkService>();
+        services.AddSingleton<ILibraryService, LibraryService>();
 
         // ViewModels
         services.AddSingleton<MainViewModel>();
@@ -40,6 +46,12 @@ public partial class App : Application
         services.AddTransient<WatermarkViewModel>();
         services.AddTransient<PasswordViewModel>();
         services.AddTransient<ConversionViewModel>();
+        services.AddTransient<BatchViewModel>();
+        services.AddTransient<SignatureViewModel>();
+        services.AddTransient<OcrViewModel>();
+        services.AddTransient<BookmarkPanelViewModel>();
+        services.AddTransient<LibraryViewModel>();
+        services.AddTransient<TextToSpeechViewModel>();
 
         // Views
         services.AddSingleton<MainWindow>();
