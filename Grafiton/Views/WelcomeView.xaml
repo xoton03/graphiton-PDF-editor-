@@ -1,0 +1,155 @@
+<UserControl x:Class="Grafiton.Views.WelcomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+             xmlns:models="clr-namespace:Grafiton.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             AllowDrop="True"
+             Drop="UserControl_Drop"
+             DragOver="UserControl_DragOver">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Hero -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
+                <ui:SymbolIcon Symbol="DocumentPdf24" FontSize="44" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,12,0"/>
+                <ui:TextBlock Text="Grafiton" FontTypography="Title" FontSize="36" FontWeight="Bold" VerticalAlignment="Center"/>
+            </StackPanel>
+            <ui:TextBlock Text="Votre lecteur PDF natif, moderne et 100% local" 
+                          FontTypography="Body" FontSize="16" Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                          HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Main Content (2 Columns: Drag/Drop Area & Recent Files) -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Column 1: Action Drop Zone -->
+            <Border Grid.Column="0" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                    BorderThickness="2" 
+                    CornerRadius="12" 
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Padding="32">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Border Width="80" Height="80" CornerRadius="40" 
+                                Background="{DynamicResource SystemAccentColorSecondaryBrush}" 
+                                Margin="0,0,0,16" HorizontalAlignment="Center">
+                            <ui:SymbolIcon Symbol="FolderOpen24" FontSize="36" Foreground="{DynamicResource SystemAccentColorBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <ui:TextBlock Text="Ouvrir un document PDF" 
+                                      FontTypography="Subtitle" FontSize="20" FontWeight="SemiBold"
+                                      HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        
+                        <ui:TextBlock Text="Glissez-déposez votre fichier PDF ici ou cliquez sur le bouton ci-dessous" 
+                                      TextWrapping="Wrap" TextAlignment="Center" 
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
+                                      Margin="0,0,0,24"/>
+
+                        <ui:Button Content="Parcourir les fichiers" 
+                                   Icon="FolderOpen24" 
+                                   Appearance="Primary" 
+                                   Padding="24,12" 
+                                   FontSize="15"
+                                   HorizontalAlignment="Center"
+                                   Command="{Binding OpenPdfCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Column 2: Recent Files List -->
+            <Border Grid.Column="2" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Padding="24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ui:SymbolIcon Symbol="History24" FontSize="20" Margin="0,0,8,0" Foreground="{DynamicResource SystemAccentColorBrush}"/>
+                            <ui:TextBlock Text="Fichiers récents" FontTypography="Subtitle" FontSize="18" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        
+                        <ui:Button Content="Effacer l'historique" 
+                                   Icon="Delete24" 
+                                   Appearance="Secondary"
+                                   HorizontalAlignment="Right"
+                                   Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Command="{Binding ClearRecentFilesCommand}"/>
+                    </Grid>
+
+                    <!-- Empty state -->
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                        <ui:SymbolIcon Symbol="DocumentSearch24" FontSize="48" Foreground="{DynamicResource TextFillColorDisabledBrush}" Margin="0,0,0,12"/>
+                        <ui:TextBlock Text="Aucun fichier récent" FontTypography="Body" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </StackPanel>
+
+                    <!-- Items List -->
+                    <ListView Grid.Row="1" 
+                              ItemsSource="{Binding RecentFiles}" 
+                              Background="Transparent"
+                              BorderThickness="0"
+                              Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:RecentFile}">
+                                <ui:CardAction Margin="0,4" Padding="12" 
+                                               Command="{Binding DataContext.OpenRecentFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                               CommandParameter="{Binding}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <ui:SymbolIcon Grid.Column="0" Symbol="DocumentPdf24" FontSize="24" 
+                                                       Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <ui:TextBlock Text="{Binding FileName}" FontTypography="Body" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                            <ui:TextBlock Text="{Binding FilePath}" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <ui:Button Grid.Column="2" 
+                                                   Icon="Dismiss24" 
+                                                   Appearance="Transparent" 
+                                                   Padding="6" 
+                                                   ToolTip="Retirer des récents"
+                                                   Command="{Binding DataContext.RemoveRecentFileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </ui:CardAction>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

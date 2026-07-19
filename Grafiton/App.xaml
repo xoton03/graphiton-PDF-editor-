@@ -1,0 +1,13 @@
+<Application x:Class="Grafiton.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:uiMarkup="clr-namespace:Wpf.Ui.Markup;assembly=Wpf.Ui">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <uiMarkup:ThemesDictionary Theme="Dark" />
+                <uiMarkup:ControlsDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

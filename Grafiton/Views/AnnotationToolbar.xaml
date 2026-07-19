@@ -1,0 +1,90 @@
+<UserControl x:Class="Grafiton.Views.AnnotationToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+             xmlns:models="clr-namespace:Grafiton.Models"
+             mc:Ignorable="d">
+
+    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+            BorderThickness="1" 
+            CornerRadius="8" 
+            Padding="8,6">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <!-- Highlight Tool -->
+            <ui:Button Icon="Highlight24" 
+                       ToolTip="Surligner le texte" 
+                       Appearance="Secondary" 
+                       Margin="0,0,6,0"
+                       Command="{Binding SelectToolCommand}">
+                <ui:Button.CommandParameter>
+                    <models:AnnotationType>Highlight</models:AnnotationType>
+                </ui:Button.CommandParameter>
+            </ui:Button>
+
+            <!-- Sticky Note -->
+            <ui:Button Icon="Comment24" 
+                       ToolTip="Ajouter une note" 
+                       Appearance="Secondary" 
+                       Margin="0,0,6,0"
+                       Command="{Binding SelectToolCommand}">
+                <ui:Button.CommandParameter>
+                    <models:AnnotationType>StickyNote</models:AnnotationType>
+                </ui:Button.CommandParameter>
+            </ui:Button>
+
+            <!-- Freehand Pen -->
+            <ui:Button Icon="Edit24" 
+                       ToolTip="Dessin libre au stylo" 
+                       Appearance="Secondary" 
+                       Margin="0,0,6,0"
+                       Command="{Binding SelectToolCommand}">
+                <ui:Button.CommandParameter>
+                    <models:AnnotationType>InkDrawing</models:AnnotationType>
+                </ui:Button.CommandParameter>
+            </ui:Button>
+
+            <!-- Rectangle Shape -->
+            <ui:Button Icon="Shapes24" 
+                       ToolTip="Forme rectangle" 
+                       Appearance="Secondary" 
+                       Margin="0,0,12,0"
+                       Command="{Binding SelectToolCommand}">
+                <ui:Button.CommandParameter>
+                    <models:AnnotationType>ShapeRectangle</models:AnnotationType>
+                </ui:Button.CommandParameter>
+            </ui:Button>
+
+            <Rectangle Width="1" Height="20" Fill="{DynamicResource ControlStrokeColorDefaultBrush}" Margin="0,0,12,0"/>
+
+            <!-- Color Swatches with Active Border -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="24" Height="24" CornerRadius="12" Margin="3,0" Background="#FFD700"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="2">
+                    <ui:Button Appearance="Transparent" Padding="0"
+                               Command="{Binding SetColorCommand}" CommandParameter="#FFD700"/>
+                </Border>
+
+                <Border Width="24" Height="24" CornerRadius="12" Margin="3,0" Background="#00FF7F"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="2">
+                    <ui:Button Appearance="Transparent" Padding="0"
+                               Command="{Binding SetColorCommand}" CommandParameter="#00FF7F"/>
+                </Border>
+
+                <Border Width="24" Height="24" CornerRadius="12" Margin="3,0" Background="#FF69B4"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="2">
+                    <ui:Button Appearance="Transparent" Padding="0"
+                               Command="{Binding SetColorCommand}" CommandParameter="#FF69B4"/>
+                </Border>
+
+                <Border Width="24" Height="24" CornerRadius="12" Margin="3,0" Background="#1E90FF"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="2">
+                    <ui:Button Appearance="Transparent" Padding="0"
+                               Command="{Binding SetColorCommand}" CommandParameter="#1E90FF"/>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

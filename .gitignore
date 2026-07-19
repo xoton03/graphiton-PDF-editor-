@@ -1,0 +1,37 @@
+## Visual Studio / .NET .gitignore
+.vs/
+bin/
+obj/
+*.user
+*.userosv
+*.suo
+*.cache
+*.docstates
+*.GhostDoc
+*.nupkg
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosv
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[RRelease/
+[Rr]eleasePublic/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Ob]j/
+[Ll]og/
+[Ll]ogs/
+
+# User data folder
+Grafiton/bin/
+Grafiton/obj/

@@ -1,0 +1,102 @@
+<UserControl x:Class="Grafiton.Views.PageManagerPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+             xmlns:models="clr-namespace:Grafiton.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="280">
+
+    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+            BorderThickness="0,0,1,0">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,12">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:SymbolIcon Symbol="GroupList24" FontSize="20" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,8,0"/>
+                    <ui:TextBlock Text="Pages" FontTypography="Subtitle" FontSize="16" FontWeight="SemiBold"/>
+                </StackPanel>
+
+                <ui:Button Content="Enregistrer" 
+                           Icon="Save24" 
+                           Appearance="Primary" 
+                           HorizontalAlignment="Right" 
+                           Command="{Binding SaveChangesCommand}"/>
+            </Grid>
+
+            <!-- Pages Thumbnail List -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Thumbnails}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:PageThumbnailModel}">
+                            <ui:CardAction Margin="0,0,0,12" 
+                                           Padding="8"
+                                           Command="{Binding DataContext.SelectPageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="140"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Page Preview Box -->
+                                    <Border Grid.Row="0" 
+                                            Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}" 
+                                            CornerRadius="4" 
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <!-- Fallback icon -->
+                                            <ui:SymbolIcon Symbol="Document24" FontSize="48" Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                            <!-- Real Page Image Thumbnail -->
+                                            <Image Source="{Binding ThumbnailImage}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                            <!-- Page Number Badge -->
+                                            <Border Background="{DynamicResource SystemAccentColorBrush}" 
+                                                    CornerRadius="4" Padding="6,2" 
+                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="6">
+                                                <ui:TextBlock Text="{Binding PageNumber, StringFormat='{}Page {0}'}" FontSize="11" Foreground="White" FontWeight="Bold"/>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Action Buttons bar -->
+                                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                        <ui:Button Icon="ArrowRotateLeft24" 
+                                                   Appearance="Transparent" 
+                                                   Padding="6" 
+                                                   ToolTip="Pivoter à gauche (-90°)"
+                                                   Command="{Binding DataContext.RotateLeftCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"/>
+
+                                        <ui:Button Icon="ArrowRotateRight24" 
+                                                   Appearance="Transparent" 
+                                                   Padding="6" 
+                                                   ToolTip="Pivoter à droite (+90°)"
+                                                   Command="{Binding DataContext.RotateRightCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"/>
+
+                                        <ui:Button Icon="Delete24" 
+                                                   Appearance="Transparent" 
+                                                   Padding="6" 
+                                                   ToolTip="Supprimer la page"
+                                                   Command="{Binding DataContext.DeletePageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                   CommandParameter="{Binding}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </ui:CardAction>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

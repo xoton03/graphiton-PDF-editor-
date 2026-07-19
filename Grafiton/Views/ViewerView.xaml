@@ -1,0 +1,103 @@
+<UserControl x:Class="Grafiton.Views.ViewerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+             xmlns:views="clr-namespace:Grafiton.Views"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Action & Annotation Toolbar -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                BorderThickness="0,0,0,1" 
+                Padding="12,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left actions -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Icon="ArrowLeft24" 
+                               Appearance="Secondary" 
+                               ToolTip="Fermer le document" 
+                               Margin="0,0,6,0"
+                               Command="{Binding CloseDocumentCommand}"/>
+
+                    <ui:Button Icon="FolderOpen24" 
+                               Content="Ouvrir..." 
+                               Appearance="Secondary" 
+                               Margin="0,0,12,0"
+                               Command="{Binding OpenAnotherPdfCommand}"/>
+
+                    <ui:Button Icon="GroupList24" 
+                               Content="Pages" 
+                               Appearance="Secondary" 
+                               Margin="0,0,12,0"
+                               Command="{Binding TogglePagePanelCommand}"/>
+                </StackPanel>
+
+                <!-- Center Annotation Toolbar -->
+                <views:AnnotationToolbar Grid.Column="1" 
+                                         DataContext="{Binding AnnotationToolbarVM}" 
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center"/>
+
+                <!-- Right Phase 2 PDF Edit Actions -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Icon="DocumentCopy24" 
+                               Content="Fusion / Scission" 
+                               Appearance="Secondary" 
+                               Margin="0,0,6,0"
+                               Command="{Binding ShowMergeSplitDialogCommand}"/>
+
+                    <ui:Button Icon="Stamp24" 
+                               Content="Filigrane" 
+                               Appearance="Secondary" 
+                               Margin="0,0,6,0"
+                               Command="{Binding ShowWatermarkDialogCommand}"/>
+
+                    <ui:Button Icon="LockClosed24" 
+                               Content="Mot de passe" 
+                               Appearance="Secondary" 
+                               Command="{Binding ShowPasswordDialogCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Workspace (Page Manager Sidebar + WebView2 PDF Canvas) -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Collapsible Left Panel -->
+            <views:PageManagerPanel Grid.Column="0" 
+                                    Width="260"
+                                    DataContext="{Binding PageManagerVM}" 
+                                    Visibility="{Binding DataContext.IsPagePanelOpen, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <!-- Central PDF Viewer -->
+            <wv2:WebView2 x:Name="PdfWebView" 
+                          Grid.Column="1" 
+                          Source="{Binding SourceUri}"/>
+        </Grid>
+    </Grid>
+</UserControl>
