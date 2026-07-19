@@ -20,6 +20,21 @@ public partial class BatchViewModel : ObservableObject
     private BatchOperationType _selectedOperation = BatchOperationType.Watermark;
 
     [ObservableProperty]
+    private int _selectedOperationIndex = 0;
+
+    partial void OnSelectedOperationIndexChanged(int value)
+    {
+        SelectedOperation = value switch
+        {
+            1 => BatchOperationType.Compress,
+            2 => BatchOperationType.ConvertToImages,
+            3 => BatchOperationType.ConvertToDocx,
+            4 => BatchOperationType.ProtectPassword,
+            _ => BatchOperationType.Watermark
+        };
+    }
+
+    [ObservableProperty]
     private string _watermarkText = "CONFIDENTIAL";
 
     [ObservableProperty]
@@ -48,7 +63,16 @@ public partial class BatchViewModel : ObservableObject
         var files = _fileService.OpenMultipleFilesDialog();
         if (files != null && files.Length > 0)
         {
-            foreach (var f in files)
+            AddDroppedFiles(files);
+        }
+    }
+
+    public void AddDroppedFiles(string[] filePaths)
+    {
+        if (filePaths == null || filePaths.Length == 0) return;
+        foreach (var f in filePaths)
+        {
+            if (System.IO.File.Exists(f) && f.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 Jobs.Add(new BatchJob
                 {

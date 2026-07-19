@@ -19,6 +19,8 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        PdfSharpCore.Fonts.GlobalFontSettings.FontResolver = new FontResolver();
+
         RegisterPdfAssociation();
 
         var services = new ServiceCollection();
@@ -37,6 +39,12 @@ public partial class App : Application
         services.AddSingleton<ITextToSpeechService, TextToSpeechService>();
         services.AddSingleton<IBookmarkService, BookmarkService>();
         services.AddSingleton<ILibraryService, LibraryService>();
+        services.AddSingleton<IExtractionService, ExtractionService>();
+        services.AddSingleton<IFormFillService, FormFillService>();
+        services.AddSingleton<IRedactionService, RedactionService>();
+        services.AddSingleton<IComparisonService, ComparisonService>();
+        services.AddSingleton<IHeaderFooterService, HeaderFooterService>();
+        services.AddSingleton<IPdfAExportService, PdfAExportService>();
 
         // ViewModels
         services.AddSingleton<MainViewModel>();
@@ -52,6 +60,11 @@ public partial class App : Application
         services.AddTransient<BookmarkPanelViewModel>();
         services.AddTransient<LibraryViewModel>();
         services.AddTransient<TextToSpeechViewModel>();
+        services.AddTransient<ExtractionViewModel>();
+        services.AddTransient<FormFillViewModel>();
+        services.AddTransient<RedactionViewModel>();
+        services.AddTransient<ComparisonViewModel>();
+        services.AddTransient<HeaderFooterViewModel>();
 
         // Views
         services.AddSingleton<MainWindow>();

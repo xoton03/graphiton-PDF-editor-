@@ -1,0 +1,63 @@
+<Window x:Class="Grafiton.Views.FormFillDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+        xmlns:models="clr-namespace:Grafiton.Models"
+        mc:Ignorable="d"
+        Title="Remplir les formulaires PDF" 
+        Height="500" Width="680"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource ApplicationBackgroundBrush}">
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <ui:TextBlock Text="Formulaires PDF (AcroForms)" FontTypography="Title" FontSize="22" FontWeight="Bold"/>
+            <ui:TextBlock Text="Saisissez les valeurs des champs détectés et enregistrez le document complété." 
+                          Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- List of Fields -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Fields}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:FormItemModel}">
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                <TextBox Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" Padding="8"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Footer Actions -->
+        <StackPanel Grid.Row="2" Margin="0,16,0,0">
+            <CheckBox Content="Aplatir le formulaire (empêcher toute modification ultérieure)" IsChecked="{Binding FlattenForm}" Margin="0,0,0,12"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:Button Content="Fermer" Margin="0,0,12,0" Command="{Binding CloseCommand}"/>
+                <ui:Button Content="Enregistrer le document rempli" Icon="Save24" Appearance="Primary"
+                           FontSize="15" Padding="20,8" Command="{Binding SaveFormCommand}"/>
+            </StackPanel>
+            <ui:TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,8,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

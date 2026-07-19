@@ -59,40 +59,81 @@
                                          HorizontalAlignment="Center" 
                                          VerticalAlignment="Center"/>
 
-                <!-- Right Actions (Batch, Signature, Convert, Merge/Split, Watermark, Password) -->
+                <!-- Right Actions -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <ui:Button Icon="Layer24" 
-                               Content="Traitement par lot" 
+                               Content="Lot" 
+                               ToolTip="Traitement par lot de plusieurs PDF"
                                Appearance="Primary" 
-                               Margin="0,0,6,0"
+                               Margin="0,0,4,0"
                                Command="{Binding ShowBatchDialogCommand}"/>
+
+                    <ui:Button Icon="DocumentArrowRight24" 
+                               Content="Extraire" 
+                               ToolTip="Extraire du texte (.txt) ou des images"
+                               Appearance="Secondary" 
+                               Margin="0,0,4,0"
+                               Command="{Binding ShowExtractionDialogCommand}"/>
+
+                    <ui:Button Icon="Form24" 
+                               Content="Formulaire" 
+                               ToolTip="Remplir et enregistrer des formulaires PDF"
+                               Appearance="Secondary" 
+                               Margin="0,0,4,0"
+                               Command="{Binding ShowFormFillDialogCommand}"/>
+
+                    <ui:Button Icon="EyeOff24" 
+                               Content="Masquer" 
+                               ToolTip="Masquage définitif de zones confidentielles"
+                               Appearance="Secondary" 
+                               Margin="0,0,4,0"
+                               Command="{Binding ShowRedactionDialogCommand}"/>
+
+                    <ui:Button Icon="ArrowCompare24" 
+                               Content="Comparer" 
+                               ToolTip="Comparer 2 PDF en vue superposition d'images"
+                               Appearance="Secondary" 
+                               Margin="0,0,4,0"
+                               Command="{Binding ShowComparisonViewCommand}"/>
+
+                    <ui:Button Icon="NumberSymbol24" 
+                               Content="Paginer" 
+                               ToolTip="Ajouter numérotation, en-têtes et pieds de page"
+                               Appearance="Secondary" 
+                               Margin="0,0,4,0"
+                               Command="{Binding ShowHeaderFooterDialogCommand}"/>
 
                     <ui:Button Icon="Signature24" 
                                Content="Signer" 
+                               ToolTip="Apposer une signature visuelle"
                                Appearance="Secondary" 
-                               Margin="0,0,6,0"
+                               Margin="0,0,4,0"
                                Command="{Binding ShowSignatureDialogCommand}"/>
 
                     <ui:Button Icon="ArrowSync24" 
-                               Content="Convertir / Compresser" 
+                               Content="Convertir" 
+                               ToolTip="Convertir ou compresser le document PDF"
                                Appearance="Secondary" 
-                               Margin="0,0,6,0"
+                               Margin="0,0,4,0"
                                Command="{Binding ShowConversionDialogCommand}"/>
 
                     <ui:Button Icon="DocumentCopy24" 
-                               Content="Fusion / Scission" 
+                               Content="Pages" 
+                               ToolTip="Fusionner ou scinder des documents PDF"
                                Appearance="Secondary" 
-                               Margin="0,0,6,0"
+                               Margin="0,0,4,0"
                                Command="{Binding ShowMergeSplitDialogCommand}"/>
 
                     <ui:Button Icon="Stamp24" 
                                Content="Filigrane" 
+                               ToolTip="Ajouter un filigrane au document"
                                Appearance="Secondary" 
-                               Margin="0,0,6,0"
+                               Margin="0,0,4,0"
                                Command="{Binding ShowWatermarkDialogCommand}"/>
 
                     <ui:Button Icon="LockClosed24" 
-                               Content="Mot de passe" 
+                               Content="Sécurité" 
+                               ToolTip="Protéger ou déprotéger par mot de passe"
                                Appearance="Secondary" 
                                Command="{Binding ShowPasswordDialogCommand}"/>
                 </StackPanel>

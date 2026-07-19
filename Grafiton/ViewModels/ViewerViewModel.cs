@@ -161,6 +161,73 @@ public partial class ViewerViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ShowExtractionDialog()
+    {
+        if (Document == null) return;
+        var vm = App.ServiceProvider.GetRequiredService<ExtractionViewModel>();
+        vm.CurrentPdfPath = Document.FilePath;
+        var dialog = new ExtractionDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private async Task ShowFormFillDialogAsync()
+    {
+        if (Document == null) return;
+        var vm = App.ServiceProvider.GetRequiredService<FormFillViewModel>();
+        await vm.LoadFormFieldsAsync(Document.FilePath);
+        var dialog = new FormFillDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowRedactionDialog()
+    {
+        if (Document == null) return;
+        var vm = App.ServiceProvider.GetRequiredService<RedactionViewModel>();
+        vm.CurrentPdfPath = Document.FilePath;
+        var dialog = new RedactionDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowComparisonView()
+    {
+        var vm = App.ServiceProvider.GetRequiredService<ComparisonViewModel>();
+        if (Document != null)
+        {
+            vm.OriginalPdfPath = Document.FilePath;
+        }
+        var view = new ComparisonView(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        view.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowHeaderFooterDialog()
+    {
+        if (Document == null) return;
+        var vm = App.ServiceProvider.GetRequiredService<HeaderFooterViewModel>();
+        vm.CurrentPdfPath = Document.FilePath;
+        var dialog = new HeaderFooterDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
     private void CloseDocument()
     {
         _closeCallback();

@@ -13,7 +13,10 @@
                   Height="720" Width="1100"
                   WindowStartupLocation="CenterScreen"
                   WindowBackdropType="Mica"
-                  ExtendsContentIntoTitleBar="True">
+                  ExtendsContentIntoTitleBar="True"
+                  AllowDrop="True"
+                  PreviewDragOver="OnWindowPreviewDragOver"
+                  Drop="OnWindowDrop">
 
     <ui:FluentWindow.Resources>
         <DataTemplate DataType="{x:Type viewmodels:WelcomeViewModel}">

@@ -40,7 +40,7 @@
                 <StackPanel>
                     <ui:TextBlock Text="Action à appliquer" FontTypography="Subtitle" Margin="0,0,0,12"/>
 
-                    <ComboBox SelectedIndex="0" Margin="0,0,0,16">
+                    <ComboBox SelectedIndex="{Binding SelectedOperationIndex}" Margin="0,0,0,16">
                         <ComboBoxItem Content="Ajouter un filigrane"/>
                         <ComboBoxItem Content="Compresser les PDF"/>
                         <ComboBoxItem Content="Convertir en images PNG"/>
@@ -52,7 +52,7 @@
                     <ui:TextBox Text="{Binding WatermarkText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
 
                     <ui:TextBlock Text="Mot de passe (si protection)" FontTypography="Body" Margin="0,0,0,6"/>
-                    <ui:PasswordBox Margin="0,0,0,16"/>
+                    <ui:TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
 
                     <ui:Button Content="Ajouter des fichiers..." 
                                Icon="Add24" 
@@ -80,7 +80,7 @@
                         <ui:Button Content="Vider la liste" Icon="Delete24" Appearance="Secondary" HorizontalAlignment="Right" Command="{Binding ClearJobsCommand}"/>
                     </Grid>
 
-                    <ListView Grid.Row="1" ItemsSource="{Binding Jobs}">
+                    <ListView Grid.Row="1" ItemsSource="{Binding Jobs}" AllowDrop="True" PreviewDragOver="OnBatchDragOver" Drop="OnBatchDrop">
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:BatchJob}">
                                 <Grid Margin="0,4">
