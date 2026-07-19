@@ -58,7 +58,8 @@ public class ConversionService : IConversionService
                 options.DestinationWidth = (uint)(page.Size.Width * scale);
             }
 
-            using (var stream = await FileRandomAccessStream.OpenAsync(outPath, FileAccessMode.ReadWrite))
+            using (var fs = new FileStream(outPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+            using (var stream = fs.AsRandomAccessStream())
             {
                 await page.RenderToStreamAsync(stream, options);
             }
