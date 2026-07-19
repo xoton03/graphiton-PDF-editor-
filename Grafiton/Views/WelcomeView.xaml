@@ -102,14 +102,14 @@
                                    Command="{Binding ClearRecentFilesCommand}"/>
                     </Grid>
 
-                    <!-- Empty state -->
+                    <!-- Empty state (Visible ONLY when HasNoRecentFiles is true) -->
                     <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                Visibility="{Binding HasRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                                Visibility="{Binding HasNoRecentFiles, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ui:SymbolIcon Symbol="DocumentSearch24" FontSize="48" Foreground="{DynamicResource TextFillColorDisabledBrush}" Margin="0,0,0,12"/>
                         <ui:TextBlock Text="Aucun fichier récent" FontTypography="Body" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                     </StackPanel>
 
-                    <!-- Items List -->
+                    <!-- Items List (Visible ONLY when HasRecentFiles is true) -->
                     <ListView Grid.Row="1" 
                               ItemsSource="{Binding RecentFiles}" 
                               Background="Transparent"

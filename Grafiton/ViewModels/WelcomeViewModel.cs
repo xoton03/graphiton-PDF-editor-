@@ -18,6 +18,9 @@ public partial class WelcomeViewModel : ObservableObject
     [ObservableProperty]
     private bool _hasRecentFiles;
 
+    [ObservableProperty]
+    private bool _hasNoRecentFiles = true;
+
     public WelcomeViewModel(IFileService fileService, Action<string> openPdfCallback)
     {
         _fileService = fileService;
@@ -29,7 +32,13 @@ public partial class WelcomeViewModel : ObservableObject
     {
         var list = _fileService.GetRecentFiles();
         RecentFiles = new ObservableCollection<RecentFile>(list);
+        UpdateRecentState();
+    }
+
+    private void UpdateRecentState()
+    {
         HasRecentFiles = RecentFiles.Count > 0;
+        HasNoRecentFiles = RecentFiles.Count == 0;
     }
 
     [RelayCommand]
@@ -58,7 +67,7 @@ public partial class WelcomeViewModel : ObservableObject
         {
             _fileService.RemoveRecentFile(recentFile.FilePath);
             RecentFiles.Remove(recentFile);
-            HasRecentFiles = RecentFiles.Count > 0;
+            UpdateRecentState();
         }
     }
 
@@ -67,6 +76,6 @@ public partial class WelcomeViewModel : ObservableObject
     {
         _fileService.ClearRecentFiles();
         RecentFiles.Clear();
-        HasRecentFiles = false;
+        UpdateRecentState();
     }
 }
