@@ -32,7 +32,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Left actions with official logo -->
+                <!-- Left actions -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                     <ui:Button Icon="ArrowLeft24" 
                                Appearance="Secondary" 
@@ -51,8 +51,6 @@
                                Appearance="Secondary" 
                                Margin="0,0,12,0"
                                Command="{Binding TogglePagePanelCommand}"/>
-
-                    <Image Source="pack://application:,,,/Resources/logo.png" Width="20" Height="20" Margin="4,0,6,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
                 </StackPanel>
 
                 <!-- Center Annotation Toolbar -->

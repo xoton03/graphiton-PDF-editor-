@@ -29,18 +29,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Custom TitleBar with Official Grafiton Logo -->
+        <!-- Custom TitleBar -->
         <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}">
             <ui:TitleBar.Header>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
-                    <Image Source="pack://application:,,,/Resources/logo.png" Width="22" Height="22" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="HighQuality"/>
                     <ui:TextBlock Text="Grafiton" FontTypography="Body" FontWeight="Bold"/>
                 </StackPanel>
             </ui:TitleBar.Header>
 
             <ui:TitleBar.TrailingContent>
                 <StackPanel Orientation="Horizontal">
-                    <ui:Button Icon="DarkTheme24" 
+                    <ui:Button Icon="{Binding ThemeIcon}" 
                                Appearance="Transparent" 
                                ToolTip="Changer de thème (Clair / Sombre)" 
                                Margin="0,0,8,0"

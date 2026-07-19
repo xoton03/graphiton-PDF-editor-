@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Grafiton.Services;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 
 namespace Grafiton.ViewModels;
 
@@ -23,6 +24,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ApplicationTheme _currentTheme = ApplicationTheme.Dark;
 
+    [ObservableProperty]
+    private SymbolRegular _themeIcon = SymbolRegular.DarkTheme24;
+
     public WelcomeViewModel WelcomeVM { get; }
     public ViewerViewModel ViewerVM { get; }
 
@@ -36,6 +40,9 @@ public partial class MainViewModel : ObservableObject
 
         CurrentViewModel = WelcomeVM;
         IsDocumentOpen = false;
+
+        // Apply dark theme by default
+        ApplicationThemeManager.Apply(ApplicationTheme.Dark);
     }
 
     public void OpenPdfFile(string filePath)
@@ -73,11 +80,13 @@ public partial class MainViewModel : ObservableObject
         {
             ApplicationThemeManager.Apply(ApplicationTheme.Light);
             CurrentTheme = ApplicationTheme.Light;
+            ThemeIcon = SymbolRegular.WeatherMoon24;
         }
         else
         {
             ApplicationThemeManager.Apply(ApplicationTheme.Dark);
             CurrentTheme = ApplicationTheme.Dark;
+            ThemeIcon = SymbolRegular.DarkTheme24;
         }
     }
 }

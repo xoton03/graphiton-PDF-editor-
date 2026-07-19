@@ -21,12 +21,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Hero with Official Grafiton Logo -->
+        <!-- Header Hero -->
         <StackPanel Grid.Row="0" Margin="0,0,0,24" HorizontalAlignment="Center">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
-                <Image Source="pack://application:,,,/Resources/logo.png" Width="52" Height="52" Margin="0,0,14,0" RenderOptions.BitmapScalingMode="HighQuality"/>
-                <ui:TextBlock Text="Grafiton" FontTypography="Title" FontSize="40" FontWeight="Bold" VerticalAlignment="Center"/>
-            </StackPanel>
+            <ui:TextBlock Text="Grafiton" FontTypography="Title" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,8"/>
             <ui:TextBlock Text="Votre lecteur et éditeur PDF natif, moderne et 100% local" 
                           FontTypography="Body" FontSize="16" Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
                           HorizontalAlignment="Center"/>
