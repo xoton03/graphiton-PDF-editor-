@@ -1,6 +1,8 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Win32;
 using Grafiton.Services;
 using Grafiton.ViewModels;
 
@@ -10,9 +12,14 @@ public partial class App : Application
 {
     public static IServiceProvider ServiceProvider { get; private set; } = null!;
 
+    [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        RegisterPdfAssociation();
 
         var services = new ServiceCollection();
 
@@ -48,5 +55,39 @@ public partial class App : Application
             var mainViewModel = ServiceProvider.GetRequiredService<MainViewModel>();
             mainViewModel.OpenPdfFile(e.Args[0]);
         }
+    }
+
+    private static void RegisterPdfAssociation()
+    {
+        try
+        {
+            string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? string.Empty;
+            if (string.IsNullOrEmpty(exePath) || !System.IO.File.Exists(exePath)) return;
+
+            string progId = "Grafiton.Document";
+
+            using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{progId}"))
+            {
+                key.SetValue("", "Document PDF Grafiton");
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{progId}\DefaultIcon"))
+            {
+                key.SetValue("", $"\"{exePath}\",0");
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{progId}\shell\open\command"))
+            {
+                key.SetValue("", $"\"{exePath}\" \"%1\"");
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.pdf"))
+            {
+                key.SetValue("", progId);
+            }
+
+            SHChangeNotify(0x08000000, 0x0000, IntPtr.Zero, IntPtr.Zero);
+        }
+        catch { }
     }
 }
