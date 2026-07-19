@@ -19,6 +19,19 @@ public partial class AnnotationToolbarViewModel : ObservableObject
     [ObservableProperty]
     private double _strokeThickness = 3.0;
 
+    // Helper boolean properties for XAML button styles & swatches
+    [ObservableProperty]
+    private bool _isHighlightSelected = true;
+
+    [ObservableProperty]
+    private bool _isNoteSelected;
+
+    [ObservableProperty]
+    private bool _isInkSelected;
+
+    [ObservableProperty]
+    private bool _isShapeSelected;
+
     public event Action<AnnotationType, string>? ConfigChanged;
 
     [RelayCommand]
@@ -26,6 +39,12 @@ public partial class AnnotationToolbarViewModel : ObservableObject
     {
         SelectedTool = tool;
         IsAnnotationActive = true;
+
+        IsHighlightSelected = tool == AnnotationType.Highlight;
+        IsNoteSelected = tool == AnnotationType.StickyNote;
+        IsInkSelected = tool == AnnotationType.InkDrawing;
+        IsShapeSelected = tool == AnnotationType.ShapeRectangle;
+
         ConfigChanged?.Invoke(SelectedTool, SelectedColor);
     }
 
@@ -33,6 +52,7 @@ public partial class AnnotationToolbarViewModel : ObservableObject
     private void SetColor(string hexColor)
     {
         SelectedColor = hexColor;
+        IsAnnotationActive = true;
         ConfigChanged?.Invoke(SelectedTool, SelectedColor);
     }
 
