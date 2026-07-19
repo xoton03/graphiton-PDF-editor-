@@ -9,6 +9,7 @@
                   mc:Ignorable="d"
                   Title="{Binding WindowTitle}" 
                   Icon="pack://application:,,,/Resources/logo.ico"
+                  WindowState="Maximized"
                   Height="720" Width="1100"
                   WindowStartupLocation="CenterScreen"
                   WindowBackdropType="Mica"
