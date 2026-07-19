@@ -21,13 +21,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Hero -->
+        <!-- Header Hero with Official Grafiton Logo -->
         <StackPanel Grid.Row="0" Margin="0,0,0,24" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
-                <ui:SymbolIcon Symbol="DocumentPdf24" FontSize="44" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,12,0"/>
-                <ui:TextBlock Text="Grafiton" FontTypography="Title" FontSize="36" FontWeight="Bold" VerticalAlignment="Center"/>
+                <Image Source="pack://application:,,,/Resources/logo.png" Width="52" Height="52" Margin="0,0,14,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <ui:TextBlock Text="Grafiton" FontTypography="Title" FontSize="40" FontWeight="Bold" VerticalAlignment="Center"/>
             </StackPanel>
-            <ui:TextBlock Text="Votre lecteur PDF natif, moderne et 100% local" 
+            <ui:TextBlock Text="Votre lecteur et éditeur PDF natif, moderne et 100% local" 
                           FontTypography="Body" FontSize="16" Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
                           HorizontalAlignment="Center"/>
         </StackPanel>

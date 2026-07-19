@@ -28,11 +28,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Custom TitleBar -->
+        <!-- Custom TitleBar with Official Grafiton Logo -->
         <ui:TitleBar Grid.Row="0" Title="{Binding WindowTitle}">
             <ui:TitleBar.Header>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
-                    <ui:SymbolIcon Symbol="DocumentPdf24" FontSize="18" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,8,0"/>
+                    <Image Source="pack://application:,,,/Resources/logo.png" Width="22" Height="22" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="HighQuality"/>
                     <ui:TextBlock Text="Grafiton" FontTypography="Body" FontWeight="Bold"/>
                 </StackPanel>
             </ui:TitleBar.Header>
