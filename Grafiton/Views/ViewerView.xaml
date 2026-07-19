@@ -7,7 +7,7 @@
              xmlns:views="clr-namespace:Grafiton.Views"
              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1100">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -59,8 +59,14 @@
                                          HorizontalAlignment="Center" 
                                          VerticalAlignment="Center"/>
 
-                <!-- Right Phase 2 PDF Edit Actions -->
+                <!-- Right Phase 2 & Phase 3 Actions -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <ui:Button Icon="ArrowSync24" 
+                               Content="Convertir / Compresser" 
+                               Appearance="Primary" 
+                               Margin="0,0,6,0"
+                               Command="{Binding ShowConversionDialogCommand}"/>
+
                     <ui:Button Icon="DocumentCopy24" 
                                Content="Fusion / Scission" 
                                Appearance="Secondary" 

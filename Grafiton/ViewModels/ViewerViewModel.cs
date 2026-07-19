@@ -102,10 +102,7 @@ public partial class ViewerViewModel : ObservableObject
         {
             Owner = Application.Current.MainWindow
         };
-        if (dialog.ShowDialog() == true)
-        {
-            // Refresh document
-        }
+        dialog.ShowDialog();
     }
 
     [RelayCommand]
@@ -115,6 +112,21 @@ public partial class ViewerViewModel : ObservableObject
         var vm = App.ServiceProvider.GetRequiredService<PasswordViewModel>();
         vm.Initialize(Document.FilePath);
         var dialog = new PasswordDialog(vm)
+        {
+            Owner = Application.Current.MainWindow
+        };
+        dialog.ShowDialog();
+    }
+
+    [RelayCommand]
+    private void ShowConversionDialog()
+    {
+        var vm = App.ServiceProvider.GetRequiredService<ConversionViewModel>();
+        if (Document != null)
+        {
+            vm.Initialize(Document.FilePath);
+        }
+        var dialog = new ConversionDialog(vm)
         {
             Owner = Application.Current.MainWindow
         };

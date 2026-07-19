@@ -21,6 +21,9 @@ public partial class App : Application
         services.AddSingleton<IPdfRenderService, PdfRenderService>();
         services.AddSingleton<IPdfEditService, PdfEditService>();
         services.AddSingleton<IAnnotationService, AnnotationService>();
+        services.AddSingleton<ILibreOfficeService, LibreOfficeService>();
+        services.AddSingleton<IConversionService, ConversionService>();
+        services.AddSingleton<ICompressionService, CompressionService>();
 
         // ViewModels
         services.AddSingleton<MainViewModel>();
@@ -29,6 +32,7 @@ public partial class App : Application
         services.AddTransient<MergeSplitViewModel>();
         services.AddTransient<WatermarkViewModel>();
         services.AddTransient<PasswordViewModel>();
+        services.AddTransient<ConversionViewModel>();
 
         // Views
         services.AddSingleton<MainWindow>();

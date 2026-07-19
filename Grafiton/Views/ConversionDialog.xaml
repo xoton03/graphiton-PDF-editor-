@@ -1,0 +1,177 @@
+<Window x:Class="Grafiton.Views.ConversionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:ui="clr-namespace:Wpf.Ui.Controls;assembly=Wpf.Ui"
+        mc:Ignorable="d"
+        Title="Convertir &amp; Compresser" 
+        Height="540" Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource ApplicationBackgroundBrush}">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <ui:TextBlock Text="Convertir &amp; Compresser" FontTypography="Title" FontSize="22" FontWeight="Bold"/>
+            <ui:TextBlock Text="Exportez en images, convertissez vers Office ou réduisez la taille du PDF." 
+                          Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Tabbed Interface -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <!-- Tab 1: PDF -> Images -->
+            <TabItem Header="PDF → Images">
+                <Grid Margin="0,16,0,0">
+                    <StackPanel>
+                        <ui:TextBlock Text="Format d'image :" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <ComboBox SelectedValue="{Binding SelectedImageFormat}" SelectedValuePath="Content" Margin="0,0,0,16" Padding="8">
+                            <ComboBoxItem Content="PNG"/>
+                            <ComboBoxItem Content="JPG"/>
+                        </ComboBox>
+
+                        <ui:TextBlock Text="Résolution (DPI) :" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <ComboBox SelectedValue="{Binding SelectedDpi}" SelectedValuePath="Tag" Margin="0,0,0,24" Padding="8">
+                            <ComboBoxItem Content="96 DPI (Standard Écran)" Tag="96"/>
+                            <ComboBoxItem Content="150 DPI (Recommandé)" Tag="150"/>
+                            <ComboBoxItem Content="300 DPI (Haute Qualité)" Tag="300"/>
+                        </ComboBox>
+
+                        <ui:Button Content="Exporter les pages en images" Icon="FolderZip24" Appearance="Primary"
+                                   FontSize="15" Padding="24,10" HorizontalAlignment="Right"
+                                   Command="{Binding ExportPdfToImagesCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 2: Images -> PDF -->
+            <TabItem Header="Images → PDF">
+                <Grid Margin="0,16,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                        <ui:Button Content="Ajouter des images" Icon="Add24" Appearance="Primary" Margin="0,0,8,0"
+                                   Command="{Binding AddImagesForPdfCommand}"/>
+                        <ui:Button Content="Retirer" Icon="Delete24" Appearance="Secondary"
+                                   Command="{Binding RemoveImageForPdfCommand}"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="1" CornerRadius="8" Background="{DynamicResource ControlFillColorDefaultBrush}" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1" Padding="4">
+                        <ListBox ItemsSource="{Binding ImagesToConvert}" SelectedItem="{Binding SelectedImageToConvert}"
+                                 Background="Transparent" BorderThickness="0" Padding="4"/>
+                    </Border>
+
+                    <ui:Button Grid.Row="2" Content="Générer le PDF" Icon="Document24" Appearance="Primary"
+                               FontSize="15" Padding="24,10" HorizontalAlignment="Right" Margin="0,16,0,0"
+                               Command="{Binding ConvertImagesToPdfCommand}"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 3: PDF -> Office -->
+            <TabItem Header="PDF ↔ Office">
+                <Grid Margin="0,16,0,0">
+                    <StackPanel>
+                        <!-- LibreOffice Detection Status Banner -->
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ui:SymbolIcon Grid.Column="0" Symbol="CheckmarkCircle24" FontSize="24" Foreground="{DynamicResource SystemAccentColorBrush}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                                <ui:TextBlock Grid.Column="1" Text="{Binding LibreOfficeStatus}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                <ui:Button Grid.Column="2" Content="Télécharger LibreOffice" Appearance="Secondary"
+                                           Visibility="{Binding IsLibreOfficeInstalled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                                           Command="{Binding OpenLibreOfficeDownloadSiteCommand}"/>
+                            </Grid>
+                        </Border>
+
+                        <ui:TextBlock Text="Choisissez le format cible :" FontWeight="SemiBold" Margin="0,0,0,12"/>
+
+                        <UniformGrid Columns="3" Margin="0,0,0,24">
+                            <ui:Button Content="Word (.docx)" Icon="Document24" Appearance="Primary" Margin="4" Padding="16,12"
+                                       IsEnabled="{Binding IsLibreOfficeInstalled}"
+                                       Command="{Binding ConvertPdfToOfficeCommand}" CommandParameter="docx"/>
+
+                            <ui:Button Content="Excel (.xlsx)" Icon="Table24" Appearance="Primary" Margin="4" Padding="16,12"
+                                       IsEnabled="{Binding IsLibreOfficeInstalled}"
+                                       Command="{Binding ConvertPdfToOfficeCommand}" CommandParameter="xlsx"/>
+
+                            <ui:Button Content="PowerPoint (.pptx)" Icon="SlideShow24" Appearance="Primary" Margin="4" Padding="16,12"
+                                       IsEnabled="{Binding IsLibreOfficeInstalled}"
+                                       Command="{Binding ConvertPdfToOfficeCommand}" CommandParameter="pptx"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 4: Compresser PDF -->
+            <TabItem Header="Compresser PDF">
+                <Grid Margin="0,16,0,0">
+                    <StackPanel>
+                        <ui:TextBlock Text="Réduction de la taille du fichier :" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <ui:TextBlock Text="Optimise les flux PDF et la résolution des images internes." Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,20"/>
+
+                        <!-- Metrics Box -->
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                                BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,24"
+                                Visibility="{Binding CompressionResult, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <ui:TextBlock Text="Taille d'origine" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <ui:TextBlock Text="{Binding CompressionResult.OriginalSizeFormatted}" FontTypography="Subtitle" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <ui:TextBlock Text="Taille optimisée" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <ui:TextBlock Text="{Binding CompressionResult.CompressedSizeFormatted}" FontTypography="Subtitle" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <ui:TextBlock Text="Réduction" FontTypography="Caption" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    <ui:TextBlock Text="{Binding CompressionResult.ReductionFormatted}" FontTypography="Subtitle" FontWeight="Bold" Foreground="{DynamicResource SystemAccentColorBrush}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <ui:Button Content="Optimiser et Compresser" Icon="ArrowDownload24" Appearance="Primary"
+                                   FontSize="15" Padding="24,10" HorizontalAlignment="Right"
+                                   Command="{Binding CompressPdfCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Progress bar & Status Footer -->
+        <StackPanel Grid.Row="2" Margin="0,12,0,0">
+            <ProgressBar Value="{Binding ProgressPercent}" Maximum="100" Height="4" Margin="0,0,0,8"
+                         Visibility="{Binding IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <ui:TextBlock Text="{Binding StatusMessage}" Foreground="{DynamicResource SystemAccentColorBrush}" FontWeight="SemiBold"/>
+        </StackPanel>
+    </Grid>
+</Window>
